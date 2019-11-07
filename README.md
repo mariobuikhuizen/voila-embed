@@ -25,11 +25,8 @@ $ conda activate ve
 Start voilà (in another terminal):
 ```
 $ conda activate ve
-(ve)$ jupyter notebook --NotebookApp.token='' --NotebookApp.open_browser=False --NotebookApp.allow_origin='http://localhost:5000' --VoilaConfiguration.template=embed --VoilaConfiguration.enable_nbextensions=True --port=8000
+(ve)$ voila --Voila.open_browser=False --template=embed --VoilaConfiguration.enable_nbextensions=True --Voila.tornado_settings="{'allow_origin': 'http://localhost:5000'}" --port=8000
 ```
-> :warning: **arbitrary code execution possible**: Because voila server does not yet support CORS 
-settings, we use the jupyter notebook server for now. This server does not prevent arbitrary code
-execution in the kernel. Only use as demo.
 
 Open browser and go to `http://localhost:5000`
 
