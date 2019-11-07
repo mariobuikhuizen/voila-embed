@@ -2,6 +2,8 @@
 
 Embed jupyter widgets in existing websites.
 
+![voila-embed](https://user-images.githubusercontent.com/46192475/68395799-bbfb6080-0170-11ea-84d3-90c8078e28bd.gif)
+
 ## Demo
 
 Setup:
