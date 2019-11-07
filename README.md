@@ -54,3 +54,6 @@ In your notebook set `_metadata={'mount_id': 'my-widget'}` on a ipyvuetify widge
 any other widget.
 
 See [example_site/index.html](example_site/index.html) for an example.
+
+## Online demo
+Using heruku for hosting a voila server and github pages as webserver: https://mariobuikhuizen.github.io/voila-embed
