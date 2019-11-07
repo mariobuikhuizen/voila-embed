@@ -1,0 +1,12 @@
+{%- set kernel_id = kernel_start() -%}
+{% for cell in cell_generator(nb, kernel_id) -%}
+{% endfor -%}
+{
+    "baseUrl": "{{ resources.base_url }}",
+    "kernelId": "{{ kernel_id }}",
+    "extensions": [
+        {% for ext in resources.nbextensions-%}
+            "{{ resources.base_url }}voila/nbextensions/{{ ext }}.js"{{ "," if not loop.last }}
+        {% endfor %}
+    ]
+}
