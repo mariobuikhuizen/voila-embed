@@ -56,4 +56,4 @@ any other widget.
 See [example_site/index.html](example_site/index.html) for an example.
 
 ## Online demo
-Using heruku for hosting a voila server and github pages as webserver: https://mariobuikhuizen.github.io/voila-embed
+Using Heroku for hosting a voila server and github pages as webserver: https://mariobuikhuizen.github.io/voila-embed
