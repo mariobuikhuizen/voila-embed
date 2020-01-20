@@ -5,30 +5,28 @@ Vue.component('jupyter-widget-embed', {
         return {
             renderFn: undefined,
             elem: undefined,
-            mountPath: `${this.voilaUrl}${this.notebook}${this.mountId}`,
         }
     },
     props: ['voila-url', 'notebook', 'mount-id'],
     created() {
         init(this.voilaUrl, this.notebook);
-        requestWidget(this.mountPath);
     },
     mounted() {
-        requestWidget(this.mountPath)
+        requestWidget(this.$props)
+            .then(model => model.widget_manager.create_view(model))
             .then(widgetView => {
-                    if (['VuetifyView', 'VuetifyTemplateView'].includes(widgetView.model.get('_view_name'))) {
-                        this.renderFn = createElement => widgetView.vueRender(createElement);
-                    } else {
-                        while (this.$el.firstChild) {
-                            this.$el.removeChild(this.$el.firstChild);
-                        }
-
-                        requirejs(['@jupyter-widgets/base'], widgets =>
-                            widgets.JupyterPhosphorWidget.attach(widgetView.pWidget, this.$el)
-                        );
+                if (['VuetifyView', 'VuetifyTemplateView'].includes(widgetView.model.get('_view_name'))) {
+                    this.renderFn = createElement => widgetView.vueRender(createElement);
+                } else {
+                    while (this.$el.firstChild) {
+                        this.$el.removeChild(this.$el.firstChild);
                     }
+
+                    requirejs(['@jupyter-widgets/base'], widgets =>
+                        widgets.JupyterPhosphorWidget.attach(widgetView.pWidget, this.$el)
+                    );
                 }
-            );
+            });
     },
     render(createElement) {
         if (this.renderFn) {
@@ -50,19 +48,25 @@ Vue.component('jupyter-widget-embed', {
 const widgetResolveFns = {};
 const widgetPromises = {};
 
-function provideWidget(mountPath, widgetView) {
-    if (widgetResolveFns[mountPath]) {
-        widgetResolveFns[mountPath](widgetView);
+function keyFromMountPath(obj) {
+    return `${obj.voilaUrl}${obj.notebook}${obj.mountId}`;
+}
+
+function provideWidget(mountPath, widgetModel) {
+    const key = keyFromMountPath(mountPath);
+    if (widgetResolveFns[key]) {
+        widgetResolveFns[key](widgetModel);
     } else {
-        widgetPromises[mountPath] = Promise.resolve(widgetView);
+        widgetPromises[key] = Promise.resolve(widgetModel);
     }
 }
 
 function requestWidget(mountPath) {
-    if (!widgetPromises[mountPath]) {
-        widgetPromises[mountPath] = new Promise(resolve => widgetResolveFns[mountPath] = resolve);
+    const key = keyFromMountPath(mountPath);
+    if (!widgetPromises[key]) {
+        widgetPromises[key] = new Promise(resolve => widgetResolveFns[key] = resolve);
     }
-    return widgetPromises[mountPath];
+    return widgetPromises[key];
 }
 
 function getWidgetManager(voila, kernel) {
@@ -147,9 +151,8 @@ async function init(voilaUrl, notebook) {
                     const model = await modelPromise;
                     const meta = model.get('_metadata');
                     const mountId = meta && meta.mount_id;
-                    if (mountId && model.get('_view_name')) {
-                        const view = await widgetManager.create_view(model);
-                        provideWidget(`${notebookKey}${mountId}`, view);
+                    if (mountId) {
+                        provideWidget({ voilaUrl, notebook, mountId }, model);
                     }
                 });
         })();
