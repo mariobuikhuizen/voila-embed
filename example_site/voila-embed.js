@@ -166,12 +166,16 @@ function addVoilaTags(voilaUrl) {
     if (!document.getElementById('tag-index.css')) {
         const link = document.createElement('link');
         link.href = `${voilaUrl}/voila/static/index.css`;
+        link.type = "text/css";
+        link.rel = "stylesheet";
         link.id="tag-index.css";
         document.head.appendChild(link);
     }
     if (!document.getElementById('tag-theme-light.css')) {
         const link = document.createElement('link');
         link.href = `${voilaUrl}/voila/static/theme-light.css`;
+        link.type = "text/css";
+        link.rel = "stylesheet";
         link.id="tag-theme-light.css";
         document.head.appendChild(link);
     }
