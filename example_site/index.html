@@ -105,6 +105,16 @@
                         </v-row>
                     </v-card-text>
                 </v-card>
+                <v-card v-if="sliderModel" class="ma-4 mx-auto" width="600">
+                    <v-card-title class="headline">Debug</v-card-title>
+                    <v-card-text>
+                            <jupyter-widget-embed
+                                    voila-url="http://localhost:8000"
+                                    notebook="notebook2.ipynb"
+                                    mount-id="out"
+                            ></jupyter-widget-embed>
+                    </v-card-text>
+                </v-card>
             </v-content>
         </v-layout>
     </v-app>
