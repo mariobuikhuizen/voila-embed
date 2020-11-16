@@ -1,4 +1,4 @@
-{%- set kernel_id = kernel_start() -%}
+{%- set kernel_id = kernel_start(nb) -%}
 {% for cell in cell_generator(nb, kernel_id) -%}
 {% endfor -%}
 {
