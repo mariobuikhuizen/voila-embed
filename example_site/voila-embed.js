@@ -161,6 +161,11 @@ async function init(voilaUrl, notebook) {
         define("vue", [], () => Vue);
         (async () => {
             const kernel = await voila.connectKernel(`${voilaUrl}${json.baseUrl}`, json.kernelId);
+
+            /* Workaround for the 3-second kernel connection delay on start up. Can be removed when
+             * https://github.com/jupyterlab/jupyterlab/pull/10321 is released and used by Voila */
+            kernel._kernelSession = '_RESTARTING_';
+
             const widgetManager = getWidgetManager(voila, kernel);
             await widgetManager._build_models();
 
