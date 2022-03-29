@@ -86,6 +86,7 @@ setup(
     name='voila-embed',
     version="0.0.1",
     description="A template for embedding voila into an existing site",
+    packages=[],
     data_files=data_files,
     install_requires=['voila>=0.2,<0.3'],
     include_package_data=True,
