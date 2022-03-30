@@ -84,7 +84,7 @@ for (dirpath, dirnames, filenames) in os.walk('share/jupyter/voila/templates/'):
 
 setup(
     name='voila-embed',
-    version="0.0.2",
+    version="0.0.3",
     description="A template for embedding voila into an existing site",
     packages=[],
     data_files=data_files,
