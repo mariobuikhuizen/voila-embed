@@ -167,7 +167,13 @@ async function init(voilaUrl, notebook) {
             kernel._kernelSession = '_RESTARTING_';
 
             const widgetManager = getWidgetManager(voila, kernel);
-            await widgetManager._build_models();
+
+            if (widgetManager._build_models) {
+                await widgetManager._build_models();
+            } else {
+                /* Voila >= 0.3.4 */
+                await widgetManager._loadFromKernel();
+            }
 
             Object.values(widgetManager._models)
                 .map(async (modelPromise) => {
